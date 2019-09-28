@@ -7,6 +7,7 @@ import java.util.Map;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
@@ -19,6 +20,8 @@ import retrofit2.http.PartMap;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
+import retrofit2.http.Streaming;
+import retrofit2.http.Url;
 
 public interface PropertyListService {
 
@@ -35,7 +38,7 @@ public interface PropertyListService {
     Call<PropertyList> propertyListByIdAndName(@QueryMap Map<String,String> params);
 
 
-    @POST("PropertyListServlet")
+    @POST("PropertyListServlet")//json类型提交
     Call<PropertyList> propertyListByIdAndNamePost(@Body UserInfo info);
 
 
@@ -46,9 +49,23 @@ public interface PropertyListService {
 
     @Multipart()
     @POST("UploadServlet")
-    Call<Message> uploadFile( @Part("file\";filename=\"test.jpg") RequestBody photo);
+    Call<Message> uploadFile( @Part("file\";filename=\"test.jpg") RequestBody photo );
+
+    @Multipart()
+    @POST("UploadServlet")
+    Call<Message> uploadOneFile2( @Part MultipartBody.Part photo);
 
     @Multipart()
     @POST("UploadServlet")
     Call<Message> uploadFileAndText(@PartMap Map<String,RequestBody> map);
+
+    @GET("ZhongXiaoHong/superFileView/master/doc.png")
+    Call<ResponseBody> downloadFileWithFixedUrl();
+
+    @GET
+    Call<ResponseBody> downloadFileWithDynamicUrlSync(@Url String fileUrl);
+
+    @Streaming
+    @GET
+    Call<ResponseBody> downloadFileWithDynamicUrlAsync(@Url String fileUrl);
 }
